@@ -93,7 +93,7 @@ public class MemoRepositoryTests {
     @Test
     public void testPageDefault(){
         //1페이지당 10개의 Entity
-        Pageable pageable = PageRequest.of(1,10); //.of를 통해 반환받음
+        Pageable pageable = PageRequest.of(5,10); //.of를 통해 반환받음
 
         Page<Memo> result= memoRepository.findAll(pageable);
 
