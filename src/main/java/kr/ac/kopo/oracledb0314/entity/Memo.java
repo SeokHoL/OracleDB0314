@@ -20,4 +20,5 @@ public class Memo {
     private String memoText;
 
 
+
 }
