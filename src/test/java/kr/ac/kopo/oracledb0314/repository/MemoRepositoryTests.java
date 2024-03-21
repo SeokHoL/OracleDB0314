@@ -5,6 +5,10 @@ import kr.ac.kopo.oracledb0314.entity.Memo;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+
 
 import java.beans.Transient;
 import java.util.Optional;
@@ -85,6 +89,20 @@ public class MemoRepositoryTests {
         memoRepository.deleteById(mno);
     }
 
+    
+    @Test
+    public void testPageDefault(){
+        //1페이지당 10개의 Entity
+        Pageable pageable = PageRequest.of(1,10); //.of를 통해 반환받음
+
+        Page<Memo> result= memoRepository.findAll(pageable);
+
+        System.out.println(result);
+
+        for(Memo memo : result.getContent()){
+            System.out.println(memo);
+        }
+    }
 
 
 
