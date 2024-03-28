@@ -175,6 +175,13 @@ public class MemoRepositoryTests {
             System.out.println(memo);
         }
     }
+    @Test
+    public void testQueryAnnotationNative2(){
+        List<Object[]> result =memoRepository.getNativeResult2();
+        for(Object[] memoobj : result){
+            System.out.println(memoobj[1]);
+        }
+    }
 
     }
 
