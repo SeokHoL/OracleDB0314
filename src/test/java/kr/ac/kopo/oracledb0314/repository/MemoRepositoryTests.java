@@ -9,9 +9,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.test.annotation.Commit;
 
 
 import java.beans.Transient;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.IntStream;
 
@@ -94,7 +96,7 @@ public class MemoRepositoryTests {
     @Test
     public void testPageDefault(){
         //1페이지당 10개의 Entity
-        Pageable pageable = PageRequest.of(5,10); //.of를 통해 반환받음
+        Pageable pageable = PageRequest.of(0,10); //.of를 통해 반환받음
 
         Page<Memo> result= memoRepository.findAll(pageable);
 
@@ -130,10 +132,49 @@ public class MemoRepositoryTests {
         });
     }
 
+    @Test
+    public void testQueryMethod(){
+        List<Memo> result = memoRepository.findByMnoBetweenOrderByMnoDesc(20L, 30L );
+        for (Memo memo: result){
+            System.out.println(memo.toString());
+        }
+
+    }
+    @Test
+    public void testQueryMethod2(){
+        Pageable pageable = PageRequest.of(0,10,Sort.by("mno").descending());
+        Page<Memo> result = memoRepository.findByMnoBetween(20L, 60L,pageable);
+
+        for (Memo memo: result){
+            System.out.println(memo.toString());
+        }
+
+        System.out.println("================");
+
+        pageable = PageRequest.of(0,10); //0페이지 // 10번까지
+        result = memoRepository.findByMnoBetween(20L, 60L,pageable); //20부터~60 사이중에
+        result.get().forEach(memo -> {
+            System.out.println(memo);
+        });
+
+    }
+
+    @Transactional
+    @Commit
+    @Test
+    public void testQueryMethod3(){
+        memoRepository.deleteMemoByMnoLessThan(5L);
+        testPageDefault();
+    }
 
 
-
-
+    @Test
+    public void testQueryAnnotationNative(){
+        List<Memo> result =memoRepository.getNativeResult();
+        for(Memo memo : result){
+            System.out.println(memo);
+        }
+    }
 
     }
 
